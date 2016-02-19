@@ -3,6 +3,8 @@ var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var multer = require('multer');
+var upload = multer();
 
 var app = express();
 
@@ -16,6 +18,10 @@ app.get('/favicon.ico', function(req, res) {
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html')
+});
+
+app.post('/api/check', upload.any(), function(req, res){
+	res.json({name: req.files[0].originalname, size: req.files[0].size})
 });
 
 app.set('port', process.env.PORT || 3000);
